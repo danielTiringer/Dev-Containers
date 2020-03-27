@@ -25,7 +25,7 @@ services:
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
-      - 3307:3307
+      - 3307:3306
     volumes:
       - mariadb-data:/var/lib/mysql
     networks:
