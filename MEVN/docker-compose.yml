@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  client:
+    container_name: vuejs
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./client:/data
+    environment:
+      - API_URL=http://localhost:3000/
+    networks:
+      - mevn
+
+  server:
+    container_name: express
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./server:/data
+    depends_on:
+      - database
+    environment:
+      - DATABASE_URL=database:27017
+    networks:
+      - mevn
+
+  database:
+    container_name: mongodb
+    image: mongo:4.2.5
+    ports:
+      - 27017:27017
+    volumes:
+      - .mevn-data:/data/db
+    networks:
+      - mevn
+
+networks:
+  mevn:
+volumes:
+  mevn-data:
