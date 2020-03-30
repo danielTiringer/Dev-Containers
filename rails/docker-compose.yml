@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  ruby_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ruby_container
+    volumes:
+      - ./:/home/app
+    ports:
+      - "3000:3000"
+    networks:
+      - rails
+networks:
+  rails:
