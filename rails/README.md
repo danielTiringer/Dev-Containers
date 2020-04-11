@@ -2,41 +2,48 @@
 
 Ruby on rails development Environment.
 
-## Docker
+### Create new Rails application by running commands within the container
 
-To build:
+With all the proper files in place, create a new Rails application within the `web` folder via `docker-compose`:
 
-- run `docker-compose build`
+``` bash
+docker-compose run web bundle exec rails new . --force --database=postgresql
+```
 
-To run:
+This builds the container defined in `docker-compose.yml` and runs `bundle exec rails new . --force` within it, creating a new Rails application in the `web` directory. It take a couple of minutes to complete.
 
-- run `docker-compose run --rm --service-ports ruby_dev`
+_Note: this overwrites the existing `Gemfile` with the necessary dependencies for Rails._
 
-To run in multiple terminal windows:
+### Change ownership of Rails project files to current user
 
-- run `docker exec -it YOUR_CONTAINER_ID /bin/bash`
+Because containers are run as `root` in Ubuntu, the files created by `rails new` are _owned_ by `root`. To allow local editing of the Rails application files, change the owner of the files to the current user:
 
-To exit bash or your container:
+```
+	sudo chown -R $USER:$USER .
+```
 
-- run `exit`
+### Reinstall Rails-specific Gems within the container
 
-To cleanup:
+Since the original `Gemfile` was overwritten, the container needs to install the new gems. This can be done by rebuilding the `web` container:
 
-- run `docker-compose down`
-- run `docker rmi rails-docker_ruby_dev`
+```
+docker-compose up -d --no-deps --build web
+```
 
-## Rails
+### Run the local Rails development server
 
-To start a new project:
+Finally, start the container:
 
-- run `rails new MYAPP` then `cd MYAPP`
+```
+docker-compose up
+```
 
-- Install bundles. run `bundle update && bundle install`
+And visit [`http://localhost:3000`](http://localhost:3000). The default Rails homepage should show up.
 
-Starting the server:
+### Resources
 
-- run `rails server -p $PORT -b 0.0.0.0`. Check your localhost:3000 to see if it's working.
-
-Stopping the server:
-
-- hit `ctrl-c` on your keyboard to stop the server.
+*   [Quickstart: Compose and Rails by Docker](https://docs.docker.com/compose/rails/)
+*   [Rails on Docker by Thoughtbot](https://thoughtbot.com/blog/rails-on-docker)
+*   [Get Docker Engine by Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+*   [Rails Development Environment with Docker-Compose](https://era86.github.io/2020/02/26/rails-development-environment-with-docker-compose-ubuntu-1804.html)
+*   [Connect Rails to containerized PostgreSQL](https://docs.docker.com/compose/rails/)
