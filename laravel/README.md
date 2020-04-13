@@ -1,9 +1,11 @@
 # docker-compose-laravel
 A pretty simplified docker-compose workflow that sets up a LEMP network of containers for local Laravel development.
 
-## Usage
+### Install Docker
 
 To get started, make sure you have Docker installed on your system, and then clone this repository.
+
+### Create a Laravel app
 
 Creating a new Laravel application is handled by spinning up a Composer Docker container to generate it. The script is written into the `composer.sh` shell script.
 Keep the project name laravel (the last argument), as the containers expect to use that folder.
@@ -16,6 +18,14 @@ Because containers are run as `root` in Ubuntu, the files created by  the compos
 ```
 sudo chown -R $USER:$USER .
 ```
+
+### Configure Laravel
+
+Update the following in the Laravel `.env` file:
+`DB_HOST=mysql`
+`APP_URL=http://localhost:8080`
+
+### Start the containers
 
 From the respository's root run `docker-compose up -d --build`. Open up your browser of choice to [http://localhost:8080](http://localhost:8080) and you should see your Laravel app running as intended. **Your Laravel app needs to be in the laravel directory first before bringing the containers up, otherwise the artisan container will not build, as it's missing the appropriate file.**
 
@@ -35,7 +45,7 @@ Containers created and their ports (if used) are as follows:
 - **artisan**
 - **phpmyadmin** - `:8884`
 
-## Troubleshooting
+### Troubleshooting
 
 The following issues have occurred:
 
