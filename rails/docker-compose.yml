@@ -1,26 +1,26 @@
 version: '3.7'
 services:
-  auth-api:
-    container_name: Auth-API
+  rails:
+    container_name: Rails-Backend
     build:
-      context: ./Rails-API
+      context: ./Rails-Backend
       dockerfile: Dockerfile
       args:
         RUBY_VERSION: '2.5.1'
-    command: bundle exec puma -C config/puma.rb
+    command:
     links:
-      - auth-db
+      - db
     depends_on:
-      - auth-db
+      - db
     volumes:
-      - ./Rails-API:/app
+      - ./Rails-Backend:/app
     ports:
       - '3000:3000'
     networks:
       - rails
 
-  auth-db:
-    container_name: Auth-DB
+  db:
+    container_name: Rails-DB
     image: postgres:12.2
     restart: always
     environment:
@@ -30,25 +30,11 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - auth-db:/var/lib/postgresql/data
-    networks:
-      - rails
-
-  auth-admin:
-    container_name: Auth-Admin
-    image: dpage/pgadmin4:4.20
-    depends_on:
-      - auth-db
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - '8882:80'
+      - rails-db:/var/lib/postgresql/data
     networks:
       - rails
 
 networks:
   rails:
 volumes:
-  auth-db:
+  rails-db:
