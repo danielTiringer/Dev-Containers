@@ -1,26 +1,35 @@
 version: '3.7'
 services:
   rails:
-    container_name: Rails-Backend
+    container_name: Rails
     build:
-      context: ./Docker/Simple
-      dockerfile: Dockerfile
-      args:
-        RUBY_VERSION: '2.5.1'
-    command:
+      context: ./Rails-Backend
+      dockerfile: ../Docker/Rails-With-Yarn/Dockerfile
+    command: bundle exec puma -C config/puma.rb
+    volumes:
+      - ./Rails-Backend:/app
     links:
       - db
     depends_on:
       - db
-    volumes:
-      - ./Rails-Backend:/app
+      - yarn
     ports:
       - '3000:3000'
     networks:
       - rails
 
+  yarn:
+    container_name: Yarn
+    build:
+      context: ./Rails-Backend
+      dockerfile: ../Docker/Yarn/Dockerfile
+    volumes:
+      - ./Rails-Backend:/app
+    networks:
+      - rails
+
   db:
-    container_name: Rails-DB
+    container_name: DB
     image: postgres:12.2
     restart: always
     environment:
@@ -30,11 +39,11 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - rails-db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     networks:
       - rails
 
 networks:
-  rails:
+  projekt:
 volumes:
-  rails-db:
+  db:
