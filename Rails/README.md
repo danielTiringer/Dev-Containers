@@ -101,3 +101,4 @@ Run `docker-compose run rails rake db:create` to create the database.
 *   [Rails on Docker by Thoughtbot](https://thoughtbot.com/blog/rails-on-docker)
 *   [Rails Development Environment with Docker-Compose](https://era86.github.io/2020/02/26/rails-development-environment-with-docker-compose-ubuntu-1804.html)
 *   [Connect Rails to containerized PostgreSQL](https://docs.docker.com/compose/rails/)
+*   [Enrtypoint and Guard autoreload](https://devato.com/dockerizing-a-rails-app-part-2-beefing-up-development/)
