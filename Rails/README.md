@@ -2,10 +2,15 @@
 
 Ruby on rails development Environment.
 
+### Select the Docker configuration
+
+Use the *Simple* Dockerfile for regular Rails applications. If Webpack is
+utilized, change the Dockerfile used in `docker-compose.yml` to the *With-Yarn*
+one by updating the context.
+
 ### Designate Ruby and Rails version
 
-Update the `Gemfile` for the desired Rails version. The Ruby version can be set
-in `docker-compose.yml`.
+Update the `Gemfile` for the desired Rails version. The Ruby version can be set in `docker-compose.yml`.
 
 ### Create new Rails application by running commands within the container
 
@@ -23,7 +28,7 @@ _Note: this overwrites the existing `Gemfile` with the necessary dependencies fo
 
 ### Change ownership of Rails project files to current user
 
-Because containers are run as `root` in Ubuntu, the files created by `rails new` are _owned_ by `root`. To allow local editing of the Rails application files, change the owner of the files to the current user:
+Because containers are run as `root` in Linux, the files created by `rails new` are _owned_ by `root`. To allow local editing of the Rails application files, change the owner of the files to the current user:
 
 ``` bash
 sudo chown -R $USER:$USER .

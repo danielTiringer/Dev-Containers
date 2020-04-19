@@ -3,7 +3,7 @@ services:
   rails:
     container_name: Rails-Backend
     build:
-      context: ./Rails-Backend
+      context: ./Docker/Simple
       dockerfile: Dockerfile
       args:
         RUBY_VERSION: '2.5.1'
