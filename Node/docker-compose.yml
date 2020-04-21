@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  node:
+    container_name: Node
+    build:
+      context: ./app
+      dockerfile: ../Docker/Node/Dockerfile
+      args:
+        NODE_VERSION: '12.16.2-alpine3.11'
+        ENV_PORT: 8080
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=mongodb
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB
+    command: ./scripts/wait-for.sh library-database:27017 -- /home/node/app/node_modules/.bin/nodemon server.js
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    ports:
+      - 8080:8080
+    volumes:
+      - ./Scripts:/home/node/app/scripts
+      - ./app:/home/node/app
+      - ./app/node_modules:/home/node/app/node_modules
+    networks:
+      - node
+
+  mongodb:
+    container_name: Node-MongoDB
+    image: mongo:4.1.8-xenial
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - node
+
+networks:
+  node:
+    driver: bridge
+
+volumes:
+  mongo-data:
