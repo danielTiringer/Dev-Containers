@@ -1,6 +1,6 @@
 # Docker Rails App
 
-Ruby on rails development Environment.
+Ruby on Rails development Environment.
 
 ### Select the Docker configuration
 
@@ -40,7 +40,7 @@ Depending on the Ruby and Rails versions, there might be a few dependency
 conflicts. Run the command below to fix them, then the change-owner one again.
 
 ``` bash
-docker-compose run rails-backend bundle update
+docker-compose run --rm rails bundle update
 ```
 
 ### Run the local Rails development server
@@ -55,10 +55,16 @@ And visit [`http://localhost:3000`](http://localhost:3000). The default Rails ho
 
 ### Use Rails CLI
 
-In order to 
+In order to run commands, spin up temporary containers:
 
 ``` bash
-docker-compose run rails-backend bundle update
+docker-compose run -rm rails bundle update
+```
+
+To get into the Rails command line:
+
+``` bash
+docker-compose run -rm rails rails c
 ```
 
 ### Update `config/database.yml`
@@ -92,7 +98,7 @@ production:
   password: <%= ENV['APP_DATABASE_PASSWORD'] %>
 ```
 
-Run `docker-compose run rails rake db:create` to create the database.
+Run `docker-compose run --rm rails rake db:create` to create the database.
 
 ### Resources
 
