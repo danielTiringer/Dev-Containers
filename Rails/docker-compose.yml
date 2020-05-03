@@ -1,18 +1,25 @@
 version: '3.7'
+
 services:
+
   rails:
     container_name: Rails
     build:
       context: ./Rails-Backend
       dockerfile: ../Docker/Rails-With-Yarn/Dockerfile
+    env_file: .env
     command: bundle exec puma -C config/puma.rb
+    entrypoint: ../scripts/docker-entrypoint.sh
     volumes:
       - ./Rails-Backend:/app
+      - ./Docker/Scripts:/scripts
     links:
       - db
+      - redis
+      - mailcatcher
     depends_on:
       - db
-      - yarn
+      - redis
     ports:
       - '3000:3000'
     networks:
@@ -28,22 +35,74 @@ services:
     networks:
       - rails
 
+  webpack:
+    container_name: Webpack
+    build:
+      context: ./Rails-Backend
+      dockerfile: ../Docker/Rails-With-Yarn/Dockerfile
+    env_file: ./Rails-Backend/.env
+    command: bin/webpack-dev-server
+    volumes:
+      - ./Rails-Backend:/app
+    depends_on:
+      - rails
+    networks:
+      - rails
+
+  sidekiq:
+    container_name: Sidekiq
+    build:
+      context: ./Rails-Backend
+      dockerfile: ../Docker/Sidekiq/Dockerfile
+    env_file: .env
+    volumes:
+      - ./Rails-Backend:/app
+      - ./Docker/Scripts:/scripts
+    depends_on:
+      - rails
+      - db
+      - redis
+    entrypoint: ../scripts/sidekiq-entrypoint.sh
+    networks:
+      - rails
+
   db:
     container_name: DB
     image: postgres:12.2
     restart: always
-    environment:
-      POSTGRES_DB: 'auth'
-      POSTGRES_USER: 'user'
-      POSTGRES_PASSWORD: 'password'
-    ports:
-      - '5432:5432'
+    env_file: .env
     volumes:
       - db:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - rails
+
+  redis:
+    container_name: Redis
+    image: redis:5.0.8-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis:/data
+    entrypoint: redis-server --appendonly yes
+    restart: always
+    networks:
+      - rails
+
+  mailcatcher:
+    container_name: Mailcatcher
+    build:
+      context: ./Docker/Mailcatcher
+      dockerfile: Dockerfile
+    ports:
+      - '1025:1025'
+      - '1080:1080'
     networks:
       - rails
 
 networks:
-  projekt:
+  rails:
 volumes:
   db:
+  redis:

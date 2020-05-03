@@ -6,7 +6,8 @@ Ruby on Rails development Environment.
 
 Use the *Simple* Dockerfile for regular Rails applications. If Webpack is
 utilized, change the Dockerfile used in `docker-compose.yml` to the *With-Yarn*
-one by updating the context.
+one by updating the context. Remove the services that aren't needed for the
+current project.
 
 ### Designate Ruby and Rails version
 
@@ -108,3 +109,4 @@ Run `docker-compose run --rm rails rake db:create` to create the database.
 *   [Rails Development Environment with Docker-Compose](https://era86.github.io/2020/02/26/rails-development-environment-with-docker-compose-ubuntu-1804.html)
 *   [Connect Rails to containerized PostgreSQL](https://docs.docker.com/compose/rails/)
 *   [Enrtypoint and Guard autoreload](https://devato.com/dockerizing-a-rails-app-part-2-beefing-up-development/)
+*   [Get Better Errors working in a container](https://github.com/BetterErrors/better_errors/issues/270#issuecomment-263125304)
