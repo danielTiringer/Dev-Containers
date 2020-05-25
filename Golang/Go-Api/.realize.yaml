@@ -1,0 +1,30 @@
+settings:
+  legacy:
+    force: false
+    interval: 0s
+server:
+  status: false
+  open: false
+  port: 8000
+  host: localhost
+schema:
+- name: go-api
+  path: .
+  commands:
+    install:
+      status: true
+    run:
+      status: true
+  watcher:
+    paths:
+    - /
+    ignored_paths:
+    - .git
+    - .realize
+    - vendor
+    extensions:
+    - go
+    - html
+    - css
+    - js
+    - yaml
