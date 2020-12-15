@@ -60,8 +60,9 @@ services:
       - .env
     volumes:
       - ./laravel:/laravel
+      - ./Scripts:/scripts
     working_dir: /laravel
-    entrypoint: vendor/bin/phpunit
+    entrypoint: /scripts/phpunit-entrypoint.sh
     networks:
       - laravel
 
