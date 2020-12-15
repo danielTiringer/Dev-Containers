@@ -7,12 +7,12 @@ To get started, make sure you have Docker installed on your system, and then clo
 
 ### Create a Laravel app
 
-Creating a new Laravel application is handled by spinning up a Composer Docker container to generate it. The script is written into the `composer.sh` shell script.
+Creating a new Laravel application is handled by spinning up a Composer Docker container to generate it.
 Keep the project name laravel (the last argument), as the containers expect to use that folder.
 Different Laravel versions can be used by appending a version number, e.g. `laravel/laravel:5.2.29`.
 
 ```
-sh composer.sh create-project --prefer-dist laravel/laravel laravel
+docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
 ```
 Because containers are run as `root` in Ubuntu, the files created by  the composer script are owned by `root`. To allow local editing of the Laravel application files, change the owner of the files to the current user:
 ```
@@ -29,16 +29,17 @@ Update the following in the Laravel `.env` file:
 
 From the respository's root run `docker-compose up -d --build`. Open up your browser of choice to [http://localhost:8080](http://localhost:8080) and you should see your Laravel app running as intended. **Your Laravel app needs to be in the laravel directory first before bringing the containers up, otherwise the artisan container will not build, as it's missing the appropriate file.**
 
-Three containers have been added that handle Composer, NPM, and Artisan commands without having to have these platforms installed on your local computer. Use the following command templates from your project root, modifiying them to fit your particular use case:
+Three containers have been added that handle Composer, PHPUnit, NPM, and Artisan commands without having to have these platforms installed on your local computer. Use the following command templates from your project root, modifiying them to fit your particular use case:
 
 - `docker-compose run --rm composer update`
+- `docker-compose run --rm phpunit` or `docker-compose run --rm phpunit --filter insert_test_name_here`
 - `docker-compose run --rm npm run dev`
 - `docker-compose run --rm artisan migrate`
 
 Containers created and their ports (if used) are as follows:
 
 - **nginx** - `:8080`
-- **mysql** - `:3308`
+- **mysql** - `:3306`
 - **php** - `:9000`
 - **npm**
 - **composer**
