@@ -67,6 +67,19 @@ services:
     networks:
       - symfony
 
+  webpack:
+    container_name: symfony-webpack
+    build:
+      context: ./symfony
+      dockerfile: ../Docker/yarn/Dockerfile
+    command: encore dev --watch
+    volumes:
+      - ./symfony:/app
+    depends_on:
+      - php
+    networks:
+      - symfony
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.0
     container_name: symfony-admin

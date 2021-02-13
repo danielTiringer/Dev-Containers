@@ -1,6 +1,6 @@
 # docker-compose-symfony
 
-A pretty simplified docker-compose workflow that sets up a LEMP network of containers for local Symfony development.
+A docker-compose workflow that sets up a network of containers for local Symfony development with Yarn and Webpack support.
 
 ### Install Docker
 
@@ -27,6 +27,15 @@ Modify the database credentials in the `symfony/.env` file to connect to the dat
 DATABASE_URL="mysql://user:password@mysql:3306/database?serverVersion=5.7"
 ```
 
+### Use webpack to recompile assets
+
+A webpack container is set up to watch file changes and recompile assets. It is started automatically upon the cluster's start.
+It does require extra packages to run if the `enableReactPreset()` configuration is enabled in the `webpack.config.js` that can be installed as below:
+
+``` sh
+docker-compose run --rm yarn add @babel/preset-react --dev
+docker-compose run --rm yarn add react react-dom prop-types
+```
 
 ### Start the containers
 
@@ -44,9 +53,9 @@ Containers created and their ports (if used) are as follows:
 - **mysql** - `:3306`
 - **php** - `:9000`
 - **phpmyadmin** - `:8884`
+- **yarn**
+- **webpack**
 
 ### Troubleshooting
 
-The following issues have occurred:
-
-
+<!-- The following issues have occurred: -->
