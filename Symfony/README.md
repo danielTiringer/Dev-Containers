@@ -8,13 +8,20 @@ To get started, make sure you have Docker installed on your system, and then clo
 
 ### Create a Symfony app
 
-Creating a new Symfony application is handled by spinning up a Composer Docker container to generate it.
+Creating a new Symfony application is handled by spinning up a Docker container to generate it.
 Keep the project name symfony (the last argument), as the containers expect to use that folder.
 Different Symfony versions can be used by appending a version number, e.g. `--version=5.2`.
 
 ``` sh
 docker-compose run --rm php symfony new .
 ```
+
+Alternativelty, a new project can be made with Composer as well, like below:
+
+``` sh
+docker-compose run --rm php composer create-project symfony/skeleton:4.3.99 .
+```
+
 Because containers are run as `root` in Ubuntu, the files created by  the composer script are owned by `root`. To allow local editing of the Symfony application files, change the owner of the files to the current user:
 ``` sh
 sudo chown -R $USER:$USER .
