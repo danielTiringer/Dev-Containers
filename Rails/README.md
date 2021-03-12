@@ -4,10 +4,7 @@ Ruby on Rails development Environment.
 
 ### Select the Docker configuration
 
-Use the *Simple* Dockerfile for regular Rails applications. If Webpack is
-utilized, change the Dockerfile used in `docker-compose.yml` to the *With-Yarn*
-one by updating the context. Remove the services that aren't needed for the
-current project.
+A lot of extra containers are set up in the cluster to make it generic. Remove the services that aren't needed for the current project.
 
 ### Designate Ruby and Rails version
 
@@ -18,22 +15,14 @@ Update the `Gemfile` for the desired Rails version. The Ruby version can be set 
 With all the proper files in place, create a new Rails application within the `Rails-Backend` folder via `docker-compose`:
 
 ``` bash
-docker-compose run rails rails new . --database=postgresql
+docker-compose run rails bundle exec rails new . --database=postgresql
 ```
 
 This builds the container defined in `docker-compose.yml` and runs `bundle exec
-rails new .` within it, creating a new Rails application in the `Rails-Backend`
+rails new .` within it, creating a new Rails application in the `project root`
 directory. It can take a couple of minutes to complete.
 
 _Note: this overwrites the existing `Gemfile` with the necessary dependencies for Rails._
-
-### Change ownership of Rails project files to current user
-
-Because containers are run as `root` in Linux, the files created by `rails new` are _owned_ by `root`. To allow local editing of the Rails application files, change the owner of the files to the current user:
-
-``` bash
-sudo chown -R $USER:$USER .
-```
 
 ### Reinstall the Gems
 
@@ -65,7 +54,7 @@ docker-compose run -rm rails bundle update
 To get into the Rails command line:
 
 ``` bash
-docker-compose run -rm rails rails c
+docker-compose run -rm rails bundle exec rails c
 ```
 
 ### Update `config/database.yml`
@@ -103,10 +92,6 @@ Run `docker-compose run --rm rails rake db:create` to create the database.
 
 ### Resources
 
-*   [Quickstart: Compose and Rails by Docker](https://docs.docker.com/compose/rails/)
-*   [Create Rails app using Docker](https://installvirtual.com/create-ruby-on-rails-app-using-docker/)
-*   [Rails on Docker by Thoughtbot](https://thoughtbot.com/blog/rails-on-docker)
-*   [Rails Development Environment with Docker-Compose](https://era86.github.io/2020/02/26/rails-development-environment-with-docker-compose-ubuntu-1804.html)
-*   [Connect Rails to containerized PostgreSQL](https://docs.docker.com/compose/rails/)
+*   [Rails development in Docker](https://dev.to/hint/rails-development-with-docker-13np)
 *   [Enrtypoint and Guard autoreload](https://devato.com/dockerizing-a-rails-app-part-2-beefing-up-development/)
 *   [Get Better Errors working in a container](https://github.com/BetterErrors/better_errors/issues/270#issuecomment-263125304)

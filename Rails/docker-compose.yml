@@ -1,110 +1,105 @@
 version: '3.7'
 
 services:
-
   rails:
-    container_name: Rails
+    container_name: PM-Rails
     build:
-      context: ./Rails-Backend
-      dockerfile: ../Docker/Rails-With-Yarn/Dockerfile
+      context: .
+      dockerfile: Docker/Rails-With-Yarn/Dockerfile
       args:
         RUBY_VERSION: ${RUBY_VERSION}
+        NODE_VERSION: ${NODE_VERSION}
+        BUNDLE_JOBS: 15
+        BUNDLE_RETRY: 2
+        INSTALL_PG_CLIENT: 'true'
+        UID: 1000
+        GID: 1000
     env_file: .env
-    command: bundle exec puma -C config/puma.rb
-    entrypoint: ../scripts/docker-entrypoint.sh
+    command: bundle exec rails server -p 3000 -b '0.0.0.0'
+    entrypoint: Docker/Rails-With-Yarn/entrypoint.sh
     volumes:
-      - ./Rails-Backend:/app
-      - ./Docker/Scripts:/scripts
+      - .:/app
+      - gems:/gems
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
+      - rails_cache:/app/tmp/cache
+    user: ruby
+    tty: true
+    stdin_open: true
     links:
-      - db
-      - redis
-      - mailcatcher
+      - postgres
+      - mailhog
     depends_on:
-      - db
-      - redis
+      - postgres
     ports:
-      - '3000:3000'
+      - 3000:3000
     networks:
-      - rails
+      - pm-rails
 
-  yarn:
-    container_name: Yarn
+  console:
+    container_name: PM-Rails-Console
     build:
-      context: ./Rails-Backend
-      dockerfile: ../Docker/Yarn/Dockerfile
-    volumes:
-      - ./Rails-Backend:/app
-    networks:
-      - rails
-
-  webpack:
-    container_name: Webpack
-    build:
-      context: ./Rails-Backend
-      dockerfile: ../Docker/Rails-With-Yarn/Dockerfile
-    env_file: ./Rails-Backend/.env
-    command: bin/webpack-dev-server
-    volumes:
-      - ./Rails-Backend:/app
-    depends_on:
-      - rails
-    networks:
-      - rails
-
-  sidekiq:
-    container_name: Sidekiq
-    build:
-      context: ./Rails-Backend
-      dockerfile: ../Docker/Sidekiq/Dockerfile
+      context: .
+      dockerfile: Docker/Rails-Simple/Dockerfile
+      args:
+        RUBY_VERSION: ${RUBY_VERSION}
+        UID: 1000
+        GID: 1000
     env_file: .env
+    command: bundle exec rails c
     volumes:
-      - ./Rails-Backend:/app
-      - ./Docker/Scripts:/scripts
-    depends_on:
-      - rails
-      - db
-      - redis
-    entrypoint: ../scripts/sidekiq-entrypoint.sh
+      - .:/app
+      - gems:/gems
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
+      - rails_cache:/app/tmp/cache
+    user: ruby
+    tty: true
+    stdin_open: true
     networks:
-      - rails
+      - pm-rails
 
-  db:
-    container_name: DB
-    image: postgres:12.2
-    restart: always
+  postgres:
+    container_name: PM-Rails-DB
+    image: postgres:12.2-alpine
     env_file: .env
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - db:/var/lib/postgresql/data
+      - rails-db:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - 5432:5432
     networks:
-      - rails
+      - pm-rails
 
   redis:
-    container_name: Redis
+    container_name: PM-Rails-Redis
     image: redis:5.0.8-alpine
     ports:
-      - '6379:6379'
+      - 6379:6379
     volumes:
-      - redis:/data
+      - rails-redis:/data
     entrypoint: redis-server --appendonly yes
-    restart: always
     networks:
-      - rails
+      - pm-rails
 
-  mailcatcher:
-    container_name: Mailcatcher
-    build:
-      context: ./Docker/Mailcatcher
-      dockerfile: Dockerfile
+  mailhog:
+    container_name: Rails-Mailhog
+    image: mailhog/mailhog:latest
     ports:
-      - '1025:1025'
-      - '1080:1080'
+      - 1025:1025
+      - 8025:8025
+    logging:
+      driver: none
     networks:
-      - rails
+      - pm-rails
 
 networks:
-  rails:
+  pm-rails:
 volumes:
-  db:
-  redis:
+  rails-db:
+  rails-redis:
+  gems:
+  node_modules:
+  packs:
+  rails_cache:
