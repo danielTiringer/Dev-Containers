@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+    container_name: slim-api
+    env_file:
+      - .env
+    volumes:
+      - ./api:/var/www/html
+    ports:
+      - '8080:80'
+    networks:
+      - slim
+
+  composer:
+    image: composer:latest
+    container_name: slim-composer
+    volumes:
+      - ./api:/var/www/html
+    working_dir: /var/www/html
+    networks:
+      - slim
+
+  phpunit:
+    image: php:${PHP_VERSION}-cli-alpine3.12
+    volumes:
+      - ./api:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: 'vendor/bin/phpunit'
+    networks:
+      - slim
+
+networks:
+  slim:
