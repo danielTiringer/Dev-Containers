@@ -1,0 +1,17 @@
+ARG PHP_VERSION
+FROM php:${PHP_VERSION}
+
+RUN apk add --no-cache --update \
+    icu-dev
+
+RUN docker-php-ext-configure \
+    intl
+
+RUN docker-php-ext-install \
+    intl \
+    pdo_mysql
+
+# CakePHP requires the PHP additions to be in place, even when creating a project
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+WORKDIR /var/www/html
