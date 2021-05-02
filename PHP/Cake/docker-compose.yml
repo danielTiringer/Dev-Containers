@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.dev
       args:
         PHP_VERSION: ${PHP_VERSION}
-    container_name: collection-tracker-application
+    container_name: cake-application
     env_file:
       - .env
     volumes:
@@ -19,11 +19,11 @@ services:
     links:
       - database
     networks:
-      - collection-tracker
+      - cake
 
   nginx:
     image: nginx:stable-alpine
-    container_name: collection-tracker-nginx
+    container_name: cake-nginx
     ports:
       - '8080:80'
     volumes:
@@ -33,29 +33,31 @@ services:
       - php
       - database
     networks:
-      - collection-tracker
+      - cake
 
   database:
     image: ghcr.io/linuxserver/mariadb:alpine-version-10.5.9-r0
-    container_name: collection-tracker-database
+    container_name: cake-database
     ports:
       - '3306:3306'
+    env_file:
+      - .env
     environment:
       PUID: 1000
       PGID: 1000
       TZ: Europe/Budapest
-      MYSQL_DATABASE: database
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - collection-data:/var/lib/mysql
+      - cake-data:/var/lib/mysql
     networks:
-      - collection-tracker
+      - cake
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.0
-    container_name: collection-tracker-admin
+    container_name: cake-admin
     depends_on:
       - database
     environment:
@@ -65,10 +67,10 @@ services:
     links:
       - database
     networks:
-      - collection-tracker
+      - cake
 
 networks:
-  collection-tracker:
+  cake:
 
 volumes:
-  collection-data:
+  cake-data:

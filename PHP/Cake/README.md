@@ -21,7 +21,18 @@ Because containers are run as `root` in base Docker containers, the files create
 sudo chown -R $USER:$USER .
 ```
 
-### Start the containers
+#### Connect to a database
+
+In order to connect to a database, the following updates are required in the `php/config/app_local.php`'s `Datasources['default']` array:
+
+``` php
+            'host' => 'database',
+            'username' => env('MYSQL_USER', 'my_app'),
+            'password' => env('MYSQL_PASSWORD', 'secret'),
+            'database' => env('MYSQL_DATABASE', 'my_app'),
+```
+
+## Start the containers
 
 From the respository's root run `docker-compose up -d --build`. Open up your browser of choice to [http://localhost:8080](http://localhost:8080) and you should see the app running as intended.
 
