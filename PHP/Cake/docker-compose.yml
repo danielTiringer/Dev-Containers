@@ -21,7 +21,22 @@ services:
     networks:
       - cake
 
-  nginx:
+   cake:
+    build:
+      context: ./docker/cli
+      dockerfile: Dockerfile
+      args:
+        PHP_CLI_VERSION: ${PHP_CLI_VERSION}
+    container_name: cake-cli
+    env_file:
+      - .env
+    volumes:
+      - ./php:/var/www/html
+    entrypoint: bin/cake
+    networks:
+      - cake
+
+ nginx:
     image: nginx:stable-alpine
     container_name: cake-nginx
     ports:
