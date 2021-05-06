@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile.dev
+      args:
+        PUID: ${UID}
+        PHP_VERSION: ${PHP_VERSION}
+    container_name: codeigniter-application
+    env_file:
+      - .env
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - '4200:80'
+    depends_on:
+      - database
+    links:
+      - database
+    networks:
+      - codeigniter
+
+  spark:
+    build:
+      context: ./docker/cli
+      dockerfile: Dockerfile
+      args:
+        PUID: ${UID}
+        PHP_CLI_VERSION: ${PHP_CLI_VERSION}
+    container_name: codeigniter-spark
+    env_file:
+      - .env
+    environment:
+      - APACHE_RUN_USER=#${UID}
+      - APACHE_RUN_GROUP=#${UID}
+    volumes:
+      - ./src:/var/www/html
+    entrypoint: php spark
+    networks:
+      - codeigniter
+
+  phpunit:
+    build:
+      context: ./docker/cli
+      dockerfile: Dockerfile
+      args:
+        PHP_CLI_VERSION: ${PHP_CLI_VERSION}
+    container_name: codeigniter-phpunit
+    env_file:
+      - .env
+    volumes:
+      - ./src:/var/www/html
+    entrypoint: vendor/bin/phpunit
+    networks:
+      - codeigniter
+
+  database:
+    image: ghcr.io/linuxserver/mariadb:alpine-version-10.5.9-r0
+    container_name: codeigniter-database
+    ports:
+      - '3306:3306'
+    env_file:
+      - .env
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Budapest
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - codeigniter-data:/var/lib/mysql
+    networks:
+      - codeigniter
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.0
+    container_name: codeigniter-admin
+    depends_on:
+      - database
+    environment:
+      PMA_HOST: database
+    ports:
+      - '4300:80'
+    links:
+      - database
+    networks:
+      - codeigniter
+
+networks:
+  codeigniter:
+
+volumes:
+  codeigniter-data:
