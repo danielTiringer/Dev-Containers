@@ -48,7 +48,7 @@ Containers created and their ports (if used) are as follows:
 
 - **php** - `:9000`
 - **nginx** - `:8080`
-- **mariadb** - `:3306`
+- **mysql** - `:3306`
 - **phpmyadmin** - `:8884`
 
 ### Troubleshooting

@@ -46,7 +46,7 @@ Containers created and their ports (if used) are as follows:
 - **php** - `:4200`
 - **phpunit**
 - **spark**
-- **mariadb** - `:3306`
+- **mysql** - `:3306`
 - **phpmyadmin** - `:4300`
 
 ### Troubleshooting
