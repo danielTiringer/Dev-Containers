@@ -91,7 +91,11 @@ services:
     build:
       context: ./Docker/php
       dockerfile: Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION}
     container_name: laravel-artisan
+    env_file:
+      - .env
     volumes:
       - ./laravel:/var/www/html
     depends_on:
