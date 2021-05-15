@@ -12,11 +12,7 @@ Keep the project name laravel (the last argument), as the containers expect to u
 Different Laravel versions can be used by appending a version number, e.g. `laravel/laravel:5.2.29`.
 
 ```
-docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
-```
-Because containers are run as `root` in Ubuntu, the files created by  the composer script are owned by `root`. To allow local editing of the Laravel application files, change the owner of the files to the current user:
-```
-sudo chown -R $USER:$USER .
+docker-compose run --rm php composer create-project --prefer-dist laravel/laravel .
 ```
 
 ### Configure Laravel
@@ -31,7 +27,7 @@ From the respository's root run `docker-compose up -d --build`. Open up your bro
 
 Three containers have been added that handle Composer, PHPUnit, NPM, and Artisan commands without having to have these platforms installed on your local computer. Use the following command templates from your project root, modifiying them to fit your particular use case:
 
-- `docker-compose run --rm composer update`
+- `docker-compose run --rm php composer update`
 - `docker-compose run --rm phpunit` or `docker-compose run --rm phpunit --filter insert_test_name_here`
 - `docker-compose run --rm npm run dev`
 - `docker-compose run --rm artisan migrate`
@@ -42,7 +38,6 @@ Containers created and their ports (if used) are as follows:
 - **mysql** - `:3306`
 - **php** - `:9000`
 - **npm**
-- **composer**
 - **artisan**
 - **phpmyadmin** - `:8884`
 
