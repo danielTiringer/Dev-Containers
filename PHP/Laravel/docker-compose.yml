@@ -36,21 +36,22 @@ services:
       - laravel
 
   phpunit:
-    image: php:${PHP_VERSION}-cli
+    image: php:${PHP_CLI_VERSION}
     container_name: laravel-phpunit
     env_file:
       - .env
     volumes:
-      - ./src./src
-      - ./Scripts:/scripts
-    working_dir: ./src
-    entrypoint: /scripts/phpunit-entrypoint.sh
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: vendor/bin/phpunit
     networks:
       - laravel
 
   npm:
-    image: node:13.7
+    image: node:${NODE_VERSION}
     container_name: laravel-npm
+    env_file:
+      - .env
     volumes:
       - ./src:/var/www/html
     working_dir: /var/www/html
