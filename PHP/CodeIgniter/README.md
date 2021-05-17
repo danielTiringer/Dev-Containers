@@ -17,7 +17,7 @@ Find the details about CodeIgniter applications on the [CodeIgiter Framework doc
 docker-compose run --rm php composer create-project codeigniter4/appstarter .
 ```
 
-#### Connect to a database
+### Connect to a database
 
 In order to connect to a database, first copy the `php/env` file to `php/.env`, then uncomment and change the following:
 
@@ -29,7 +29,7 @@ database.default.password = password
 database.default.DBDriver = MySQL
 ```
 
-## Start the containers
+### Start the containers
 
 From the respository's root run `docker-compose up -d --build`. Open up your browser of choice to [http://localhost:4200](http://localhost:4200) and you should see the app running as intended.
 
@@ -49,9 +49,17 @@ Containers created and their ports (if used) are as follows:
 - **mysql** - `:3306`
 - **phpmyadmin** - `:4300`
 
-### Troubleshooting
+### Install vendor packages
+
+When pulling a fresh copy of a repository, installing the vendor packages are necessary, as the `vendor/` folder is in `.gitignore`.
+
+``` sh
+docker-compose run --rm php composer install
+```
+
+## Troubleshooting
 
 
-### Resources
+## Resources
 
 - [CodeIgniter documentation](https://codeigniter.com/user_guide/index.html)

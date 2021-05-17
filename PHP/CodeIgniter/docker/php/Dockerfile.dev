@@ -2,6 +2,7 @@ ARG PHP_VERSION
 FROM php:${PHP_VERSION}
 
 RUN apt update && apt install -y \
+    unzip \
     libicu-dev
 
 RUN docker-php-ext-configure \
