@@ -17,7 +17,7 @@ Find the details about Laminas applications on the [Laminas Framework documentat
 docker-compose run --rm php composer create-project -s dev laminas/laminas-mvc-skeleton .
 ```
 
-Because containers are run as `root` in base Docker containers, the files created by  the composer script are owned by `root`. To allow local editing of the application files, change the owner of the files to the current user:
+Because containers are run as `root` in base Docker containers, the files created by  the composer script are owned by `root`. To allow local editing of the Cakeapplication files, change the owner of the files to the current user:
 
 ```sh
 sudo chown -R $USER:$USER .
@@ -36,13 +36,9 @@ In order to connect to the database, add the following to `src/config/autoload/g
 ``` php
     'db' => [
         'driver' => 'Pdo_Mysql',
-        'adapters' => [
-            mysqlAdapter::class => [
-                'dsn'    => 'mysql:dbname=database;host=database;charset=utf8',
-                'username' => 'user',
-                'password' => 'password',
-            ],
-        ],
+        'dsn'    => 'mysql:dbname=database;host=database;charset=utf8',
+        'username' => 'user',
+        'password' => 'password',
     ],
 ```
 
@@ -62,13 +58,21 @@ Containers created and their ports (if used) are as follows:
 - **mysql** - `:3306`
 - **phpmyadmin** - `:4500`
 
-### Install vendor packages
+### Start after git clone
 
 When pulling a fresh copy of a repository, installing the vendor packages are necessary, as the `vendor/` folder is in `.gitignore`.
 
 ``` sh
 docker-compose run --rm php composer install
 ```
+
+You may have to add extra permissions to the `data` folder:
+
+``` sh
+sudo chmod -R 777 src/data
+```
+
+Run the `.sql` files from `src/module/Blog/database` to create the required table and add some data.
 
 ## Troubleshooting
 
