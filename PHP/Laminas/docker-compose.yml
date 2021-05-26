@@ -41,7 +41,7 @@ services:
       - laminas
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.0
+    image: phpmyadmin/phpmyadmin
     container_name: laminas-admin
     depends_on:
       - database

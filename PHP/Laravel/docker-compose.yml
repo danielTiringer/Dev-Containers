@@ -96,7 +96,7 @@ services:
       - laravel
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.1
+    image: phpmyadmin/phpmyadmin
     container_name: laravel-admin
     restart: always
     depends_on:

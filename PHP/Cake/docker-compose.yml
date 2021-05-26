@@ -69,7 +69,7 @@ services:
       - cake
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.0
+    image: phpmyadmin/phpmyadmin
     container_name: cake-admin
     depends_on:
       - database

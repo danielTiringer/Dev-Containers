@@ -75,7 +75,7 @@ services:
       - codeigniter
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.0
+    image: phpmyadmin/phpmyadmin
     container_name: codeigniter-admin
     depends_on:
       - database
