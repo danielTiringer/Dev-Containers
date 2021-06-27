@@ -42,7 +42,7 @@ services:
     container_name: symfony-yarn
     build:
       context: ./symfony
-      dockerfile: ../Docker/Yarn/Dockerfile
+      dockerfile: ../Docker/yarn/Dockerfile
     volumes:
       - ./symfony:/app
     networks:

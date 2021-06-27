@@ -22,7 +22,7 @@ Alternativelty, a new project can be made with Composer as well, like below:
 docker-compose run --rm php composer create-project symfony/skeleton:4.3.99 .
 ```
 
-Because containers are run as `root` in Ubuntu, the files created by  the composer script are owned by `root`. To allow local editing of the Symfony application files, change the owner of the files to the current user:
+Because containers are run as `root`, the files created by  the composer script are owned by `root`. To allow local editing of the Symfony application files, change the owner of the files to the current user:
 ``` sh
 sudo chown -R $USER:$USER .
 ```
@@ -31,7 +31,7 @@ sudo chown -R $USER:$USER .
 
 Modify the database credentials in the `symfony/.env` file to connect to the database container, like below:
 ```
-DATABASE_URL="mysql://user:password@mysql:3306/database?serverVersion=5.7"
+DATABASE_URL="mysql://user:password@mysql:3306/database?serverVersion=8.0"
 ```
 
 ### Use webpack to recompile assets
@@ -50,16 +50,16 @@ From the respository's root run `docker-compose up -d --build`. Open up your bro
 
 Additional commands can be run from the Symfony command line, like adding composer packages, run tests. Some examples are shown below.
 
-- `docker-compose run --rm php symfony composer require http-clinet doctrine maker phpunit`
+- `docker-compose run --rm php symfony composer require http-client doctrine maker phpunit`
 - `docker-compose run --rm php symfony console make:entity EntityName`
 - `docker-compose run --rm php symfony php bin/phpunit tests/`
 
 Containers created and their ports (if used) are as follows:
 
-- **nginx** - `:8080`
+- **nginx** - `:4600`
 - **mysql** - `:3306`
 - **php** - `:9000`
-- **phpmyadmin** - `:8884`
+- **phpmyadmin** - `:4601`
 - **yarn**
 - **webpack**
 
