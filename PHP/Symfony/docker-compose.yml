@@ -48,8 +48,8 @@ services:
     networks:
       - symfony
 
-  webpack:
-    container_name: symfony-webpack
+  encore:
+    container_name: symfony-encore
     build:
       context: ./symfony
       dockerfile: ../Docker/yarn/Dockerfile
