@@ -21,7 +21,7 @@ services:
     networks:
       - cake
 
-   cake:
+  cake:
     build:
       context: ./docker/cli
       dockerfile: Dockerfile
@@ -36,7 +36,7 @@ services:
     networks:
       - cake
 
- nginx:
+  nginx:
     image: nginx:stable-alpine
     container_name: cake-nginx
     ports:
