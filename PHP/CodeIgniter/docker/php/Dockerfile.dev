@@ -22,7 +22,7 @@ COPY apache2.conf /etc/apache2/
 RUN service apache2 restart
 
 # CodeIgniter requires the PHP additions to be in place, even when creating a project
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN curl --fail --silent --show-error --location https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 ARG PUID=1000
 RUN useradd -G www-data,root -u $PUID -d /home/devuser devuser
