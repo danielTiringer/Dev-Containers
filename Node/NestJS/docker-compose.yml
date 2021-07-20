@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  yarn:
+    container_name: NestJS-Yarn
+    build:
+      context: ./src
+      dockerfile: ../docker/nest/Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+      target: yarn
+    env_file: .env
+    entrypoint: yarn
+    volumes:
+      - ./src:/src
+    networks:
+      - nestjs
+
+  nest:
+    container_name: NestJS-Nest-CLI
+    build:
+      context: ./src
+      dockerfile: ../docker/nest/Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+      target: nest
+    env_file: .env
+    entrypoint: nest
+    volumes:
+      - ./src:/src
+    networks:
+      - nestjs
+
+  dev:
+    container_name: NestJS-Dev-Server
+    build:
+      context: ./src
+      dockerfile: ../docker/nest/Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+      target: yarn
+    env_file: .env
+    command: run start:dev
+    ports:
+      - 3000:3000
+    entrypoint: yarn
+    volumes:
+      - ./src:/src
+    networks:
+      - nestjs
+
+networks:
+  nestjs:
