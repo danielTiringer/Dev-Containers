@@ -12,6 +12,6 @@ RUN docker-php-ext-install \
     pdo_mysql
 
 # CakePHP requires the PHP additions to be in place, even when creating a project
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN curl --fail --silent --show-error --location https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 WORKDIR /var/www/html

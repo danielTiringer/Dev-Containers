@@ -4,7 +4,7 @@ MAINTAINER Daniel Tiringer
 WORKDIR /var/www/html
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+RUN curl --fail --silent --show-error --location https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 ARG PUID=1000
 RUN useradd -G www-data,root -u $PUID -d /home/devuser devuser
