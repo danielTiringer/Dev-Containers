@@ -19,7 +19,7 @@ docker-compose run --rm php composer create-project codeigniter4/appstarter .
 
 ### Connect to a database
 
-In order to connect to a database, first copy the `php/env` file to `php/.env`, then uncomment and change the following:
+In order to connect to a database, first copy the `php/env.example` file to `php/.env`, then uncomment and change the following:
 
 ``` env
 database.default.hostname = database
