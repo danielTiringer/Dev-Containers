@@ -1,5 +1,5 @@
 ARG PHP_CLI_VERSION
-FROM php:${PHP_CLI_VERSION}
+FROM php:${PHP_VERSION}-cli-alpine
 
 RUN apk add --no-cache --update \
     icu-dev

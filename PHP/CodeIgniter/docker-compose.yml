@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile
       args:
         PUID: ${UID}
-        PHP_CLI_VERSION: ${PHP_CLI_VERSION}
+        PHP_VERSION: ${PHP_VERSION}
     container_name: codeigniter-spark
     env_file:
       - .env
