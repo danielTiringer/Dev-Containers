@@ -1,5 +1,5 @@
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}
+FROM php:${PHP_VERSION}-fpm-alpine
 
 RUN apk add --no-cache --update \
     icu-dev

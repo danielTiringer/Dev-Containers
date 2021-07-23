@@ -26,7 +26,7 @@ services:
       context: ./docker/cli
       dockerfile: Dockerfile
       args:
-        PHP_CLI_VERSION: ${PHP_CLI_VERSION}
+        PHP_VERSION: ${PHP_VERSION}
     container_name: cake-cli
     env_file:
       - .env
