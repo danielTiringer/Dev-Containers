@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   yarn:
-    container_name: NestJS-Yarn
+    container_name: ${PROJECT_NAME}-Yarn
     build:
       context: ./src
       dockerfile: ../docker/nest/Dockerfile
@@ -17,7 +17,7 @@ services:
       - nestjs
 
   nest:
-    container_name: NestJS-Nest-CLI
+    container_name: ${PROJECT_NAME}-Nest-CLI
     build:
       context: ./src
       dockerfile: ../docker/nest/Dockerfile
@@ -32,7 +32,7 @@ services:
       - nestjs
 
   dev:
-    container_name: NestJS-Dev-Server
+    container_name: ${PROJECT_NAME}-Dev-Server
     build:
       context: ./src
       dockerfile: ../docker/nest/Dockerfile
