@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.dev
       args:
         PHP_VERSION: ${PHP_VERSION}
-    container_name: cake-application
+    container_name: ${PROJECT_NAME}-application
     env_file:
       - .env
     volumes:
@@ -27,7 +27,7 @@ services:
       dockerfile: Dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION}
-    container_name: cake-cli
+    container_name: ${PROJECT_NAME}-cli
     env_file:
       - .env
     volumes:
@@ -38,7 +38,7 @@ services:
 
   nginx:
     image: nginx:stable-alpine
-    container_name: cake-nginx
+    container_name: ${PROJECT_NAME}-nginx
     ports:
       - '8080:80'
     volumes:
@@ -52,7 +52,7 @@ services:
 
   database:
     image: mysql:8
-    container_name: cake-database
+    container_name: ${PROJECT_NAME}-database
     ports:
       - '3306:3306'
     env_file:
@@ -70,7 +70,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: cake-admin
+    container_name: ${PROJECT_NAME}-admin
     depends_on:
       - database
     environment:
