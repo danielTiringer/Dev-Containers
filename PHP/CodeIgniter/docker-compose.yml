@@ -8,7 +8,7 @@ services:
       args:
         PUID: ${UID}
         PHP_VERSION: ${PHP_VERSION}
-    container_name: codeigniter-application
+    container_name: ${PROJECT_NAME}-application
     env_file:
       - .env
     volumes:
@@ -29,7 +29,7 @@ services:
       args:
         PUID: ${UID}
         PHP_VERSION: ${PHP_VERSION}
-    container_name: codeigniter-spark
+    container_name: ${PROJECT_NAME}-spark
     env_file:
       - .env
     environment:
@@ -47,7 +47,7 @@ services:
       dockerfile: Dockerfile
       args:
         PHP_CLI_VERSION: ${PHP_CLI_VERSION}
-    container_name: codeigniter-phpunit
+    container_name: ${PROJECT_NAME}-phpunit
     env_file:
       - .env
     volumes:
@@ -58,7 +58,7 @@ services:
 
   database:
     image: mysql:8
-    container_name: codeigniter-database
+    container_name: ${PROJECT_NAME}-database
     ports:
       - '3306:3306'
     env_file:
@@ -76,7 +76,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: codeigniter-admin
+    container_name: ${PROJECT_NAME}-admin
     depends_on:
       - database
     environment:

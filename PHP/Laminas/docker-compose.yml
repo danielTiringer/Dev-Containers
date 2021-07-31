@@ -8,7 +8,7 @@ services:
       args:
         PUID: ${UID}
         PHP_VERSION: ${PHP_VERSION}
-    container_name: laminas-application
+    container_name: ${PROJECT_NAME}-application
     env_file:
       - .env
     volumes:
@@ -24,7 +24,7 @@ services:
 
   database:
     image: mysql:8
-    container_name: laminas-database
+    container_name: ${PROJECT_NAME}-database
     ports:
       - '3306:3306'
     env_file:
@@ -42,7 +42,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: laminas-admin
+    container_name: ${PROJECT_NAME}-admin
     depends_on:
       - database
     environment:
