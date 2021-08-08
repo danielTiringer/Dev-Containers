@@ -1,4 +1,4 @@
-ARG PHP_CLI_VERSION
+ARG PHP_VERSION
 FROM php:${PHP_VERSION}-cli-alpine
 
 RUN apk add --no-cache --update \
