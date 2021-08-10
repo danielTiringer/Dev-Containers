@@ -2,11 +2,15 @@ version: '3.7'
 
 services:
   django:
-    container_name: Pollster-Django
+    container_name: ${PROJECT_NAME}-Django
     build:
-      context: .
-      dockerfile: Docker/Dockerfile
+      context: ./docker/python
+      dockerfile: Dockerfile
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION}
     command: python manage.py runserver 0.0.0.0:8000
+    env_file:
+      - .env
     depends_on:
       - db
     ports:
@@ -17,9 +21,10 @@ services:
       - django
 
   db:
-    container_name: Pollster-DB
+    container_name: ${PROJECT_NAME}-DB
     image: postgres:12.2-alpine
-    restart: always
+    env_file:
+      - .env
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -27,11 +32,11 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - pollster-db:/var/lib/postgresql/data
+      - django-db:/var/lib/postgresql/data
     networks:
       - django
 
 networks:
   django:
 volumes:
-  pollster-db:
+  django-db:

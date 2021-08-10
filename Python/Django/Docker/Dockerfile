@@ -1,4 +1,5 @@
-FROM python:3.7.4
+ARG PYTHON_VERSION
+FROM python:${PYTHON_VERSION}-alpine
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
