@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  flask:
+    container_name: ${PROJECT_NAME}-flask
+    build:
+      context: ./src
+      dockerfile: ../docker/flask/Dockerfile
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION}
+    env_file:
+      - .env
+    environment:
+      FLASK_ENV: development
+      FLASK_RUN_PORT: ${FLASK_PORT}
+    volumes:
+      - ./src:/app
+    ports:
+      - ${FLASK_PORT}:${FLASK_PORT}
+    networks:
+      - flask
+
+networks:
+  flask:
