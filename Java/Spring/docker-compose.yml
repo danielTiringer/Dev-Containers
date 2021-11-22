@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  spring-boot:
+    build:
+      context: ./docker/java
+      dockerfile: Dockerfile  
+      args:
+        JAVA_VERSION: ${JAVA_VERSION}
+    container_name: ${PROJECT_NAME}-API
+    working_dir: /app
+    command: sh /scripts/run.sh
+    env_file:
+      - .env
+    volumes:
+      - ./api:/app
+    ports:
+      - 4300:8080
+    networks:
+      - spring
+
+  database:
+    image: mysql:8
+    container_name: ${PROJECT_NAME}-Database
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - spring-db:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    networks:
+      - spring
+
+networks:
+  spring:
+
+volumes:
+  spring-db:
