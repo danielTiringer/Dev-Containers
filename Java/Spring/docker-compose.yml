@@ -15,11 +15,11 @@ services:
     volumes:
       - ./api:/app
     ports:
-      - 4300:8080
+      - ${API_PORT}:8080
     networks:
       - spring
 
-  database:
+  database-mysql:
     image: mysql:8
     container_name: ${PROJECT_NAME}-Database
     env_file:
@@ -31,9 +31,25 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - spring-db:/var/lib/mysql
+      - spring-mysql:/var/lib/mysql
     ports:
-      - '3306:3306'
+      - ${MYSQL_PORT}:3306
+    networks:
+      - spring
+
+  database-postgres:
+    image: postgres:14.1-alpine
+    container_name: ${PROJECT_NAME}-DB
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - spring-postgres:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:5432
     networks:
       - spring
 
@@ -41,4 +57,5 @@ networks:
   spring:
 
 volumes:
-  spring-db:
+  spring-mysql:
+  spring-postgres:
