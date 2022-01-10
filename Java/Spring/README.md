@@ -47,6 +47,11 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 ```
 
+For `MongoDB`:
+``` jproperties
+spring.data.mongodb.uri=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@database-mongodb:${MONGO_PORT}/${MONGO_DATABASE_NAME}?authSource=admin
+```
+
 ## Start the containers
 
 Copy the `env.example` file to `.env`, and source it.
@@ -55,6 +60,7 @@ From the respository's root run `docker-compose up -d --build`.
 Containers created and their ports (if used) are as follows:
 
 - **spring** - `:4300`
+- **mongodb**: `:27017`
 - **mysql** - `:3306`
 - **postgresql**: `:5432`
 

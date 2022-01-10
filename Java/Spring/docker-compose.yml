@@ -53,9 +53,26 @@ services:
     networks:
       - spring
 
+  database-mongodb:
+    image: mongo:5
+    container_name: ${PROJECT_NAME}-MongoDB
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - spring-mongodb:/data/db
+    ports:
+      - ${MONGO_PORT}:27017
+    networks:
+      - spring
+
 networks:
   spring:
 
 volumes:
   spring-mysql:
   spring-postgres:
+  spring-mongodb:
