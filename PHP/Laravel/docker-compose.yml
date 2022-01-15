@@ -80,7 +80,6 @@ services:
   mysql:
     image: mysql:8
     container_name: laravel-mysql
-    restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"

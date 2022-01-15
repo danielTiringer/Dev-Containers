@@ -6,7 +6,6 @@ services:
     image: wordpress:latest
     ports:
       - '8000:80'
-    restart: always
     volumes: ['./wordpress/:/var/www/html']
     environment:
       WORDPRESS_DB_HOST: mysql:3306
@@ -22,7 +21,6 @@ services:
     image: mysql:5.7
     volumes:
       - mysql_data:/var/lib/mysql
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress
