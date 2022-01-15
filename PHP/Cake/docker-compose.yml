@@ -68,20 +68,6 @@ services:
     networks:
       - cake
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: ${PROJECT_NAME}-admin
-    depends_on:
-      - database
-    environment:
-      PMA_HOST: database
-    ports:
-      - '8884:80'
-    links:
-      - database
-    networks:
-      - cake
-
 networks:
   cake:
 

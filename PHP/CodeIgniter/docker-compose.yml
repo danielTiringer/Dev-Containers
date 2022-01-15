@@ -74,20 +74,6 @@ services:
     networks:
       - codeigniter
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: ${PROJECT_NAME}-admin
-    depends_on:
-      - database
-    environment:
-      PMA_HOST: database
-    ports:
-      - '4300:80'
-    links:
-      - database
-    networks:
-      - codeigniter
-
 networks:
   codeigniter:
 

@@ -77,19 +77,5 @@ services:
     networks:
       - symfony
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: symfony-admin
-    depends_on:
-      - mysql
-    environment:
-      PMA_HOST: mysql
-    ports:
-      - "4601:80"
-    links:
-      - mysql
-    networks:
-      - symfony
-
 volumes:
   symfony-data:

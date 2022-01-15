@@ -95,20 +95,5 @@ services:
     networks:
       - laravel
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: laravel-admin
-    restart: always
-    depends_on:
-      - mysql
-    environment:
-      PMA_HOST: mysql
-    ports:
-      - "8884:80"
-    links:
-      - mysql
-    networks:
-      - laravel
-
 volumes:
   laravel-data:

@@ -40,20 +40,6 @@ services:
     networks:
       - laminas
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: ${PROJECT_NAME}-admin
-    depends_on:
-      - database
-    environment:
-      PMA_HOST: database
-    ports:
-      - '4500:80'
-    links:
-      - database
-    networks:
-      - laminas
-
 networks:
   laminas:
 
