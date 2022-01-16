@@ -1,37 +1,7 @@
 version: '3.8'
 
 services:
-  yarn:
-    container_name: ${PROJECT_NAME}-Yarn
-    build:
-      context: ./src
-      dockerfile: ../docker/nest/Dockerfile
-      args:
-        NODE_VERSION: ${NODE_VERSION}
-      target: yarn
-    env_file: .env
-    entrypoint: yarn
-    volumes:
-      - ./src:/src
-    networks:
-      - nestjs
-
   nest:
-    container_name: ${PROJECT_NAME}-Nest-CLI
-    build:
-      context: ./src
-      dockerfile: ../docker/nest/Dockerfile
-      args:
-        NODE_VERSION: ${NODE_VERSION}
-      target: nest
-    env_file: .env
-    entrypoint: nest
-    volumes:
-      - ./src:/src
-    networks:
-      - nestjs
-
-  dev:
     container_name: ${PROJECT_NAME}-Dev-Server
     build:
       context: ./src
