@@ -39,6 +39,7 @@ From the respository's root run `docker-compose up -d --build`. Open up your bro
 Extra containers have been added that handle Composer commands without having to have these installed on your local computer. Use the following command templates from your project root, modifiying them to fit your particular use case:
 
 ``` sh
+docker-compose run --rm php cake migrations migrate # Runs the migrations
 docker-compose run --rm php composer update
 docker-compose run --rm php composer test # Runs the test suite
 docker-compose run --rm php composer check # Runs the test suite and codesniffer
