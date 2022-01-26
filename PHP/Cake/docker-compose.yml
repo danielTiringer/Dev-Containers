@@ -4,7 +4,7 @@ services:
   php:
     build:
       context: ./docker/php
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION}
     container_name: ${PROJECT_NAME}-application
@@ -18,21 +18,6 @@ services:
       - database
     links:
       - database
-    networks:
-      - cake
-
-  cake:
-    build:
-      context: ./docker/cli
-      dockerfile: Dockerfile
-      args:
-        PHP_VERSION: ${PHP_VERSION}
-    container_name: ${PROJECT_NAME}-cli
-    env_file:
-      - .env
-    volumes:
-      - ./src:/var/www/html
-    entrypoint: bin/cake
     networks:
       - cake
 
