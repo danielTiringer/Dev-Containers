@@ -1,0 +1,55 @@
+version: '3.8'
+
+networks:
+  laravel:
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: ${PROJECT_NAME}-Nginx
+    ports:
+      - "${WEBSERVER_PORT}:80"
+    volumes:
+      - ./api:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - postgres
+    networks:
+      - lumen
+
+  php:
+    build:
+      context: ./api
+      dockerfile: ../docker/php/Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+    container_name: ${PROJECT_NAME}-API
+    env_file:
+      - .env
+    volumes:
+      - ./api:/var/www/html
+    ports:
+      - "${PHP_PORT}:9000"
+    networks:
+      - lumen
+
+  postgres:
+    image: postgres:14-alpine
+    container_name: ${PROJECT_NAME}-Database
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - lumen-data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - lumen
+
+volumes:
+  lumen-data:
+
+networks:
+  lumen:
