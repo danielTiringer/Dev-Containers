@@ -3,8 +3,8 @@ version: '3.8'
 services:
   php:
     build:
-      context: ./docker/php
-      dockerfile: Dockerfile
+      context: ./src
+      dockerfile: ../docker/php/Dockerfile
       args:
         PHP_VERSION: ${PHP_VERSION}
     container_name: ${PROJECT_NAME}-application
@@ -15,9 +15,11 @@ services:
     ports:
       - '9000:9000'
     depends_on:
-      - database
+      - mysql
+      - postgres
     links:
-      - database
+      - mysql
+      - postgres
     networks:
       - cake
 
@@ -25,31 +27,39 @@ services:
     image: nginx:stable-alpine
     container_name: ${PROJECT_NAME}-nginx
     ports:
-      - '8080:80'
+      - "${WEBSERVER_PORT}:80"
     volumes:
       - ./src:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
-      - database
+      - mysql
+      - postgres
     networks:
       - cake
 
-  database:
-    image: mysql:8
-    container_name: ${PROJECT_NAME}-database
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    container_name: ${PROJECT_NAME}-mysql
     ports:
-      - '3306:3306'
+      - "${MYSQL_PORT}:3306"
     env_file:
       - .env
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - cake-data:/var/lib/mysql
+      - cake-mysql-data:/var/lib/mysql
+    networks:
+      - cake
+
+  postgres:
+    image: postgres:${POSTGRES_VERSION}-alpine
+    container_name: ${PROJECT_NAME}-postgresql
+    env_file:
+      - .env
+    volumes:
+      - cake-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
     networks:
       - cake
 
@@ -57,4 +67,5 @@ networks:
   cake:
 
 volumes:
-  cake-data:
+  cake-mysql-data:
+  cake-postgres-data:
