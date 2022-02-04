@@ -4,6 +4,8 @@ FROM php:${PHP_VERSION}-fpm-alpine
 RUN set -ex \
     && apk add --no-cache --update \
         icu-dev \
+        bash \
+        git \
     && docker-php-ext-configure \
         intl \
     && docker-php-ext-install \
@@ -15,5 +17,3 @@ RUN set -ex \
 WORKDIR /var/www/html
 
 RUN curl --fail --silent --show-error --location https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
-RUN curl --fail --silent --show-error --location https://get.symfony.com/cli/installer | bash
-RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
