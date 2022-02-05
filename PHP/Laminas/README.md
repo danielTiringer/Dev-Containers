@@ -56,7 +56,6 @@ Containers created and their ports (if used) are as follows:
 
 - **php** - `:4400`
 - **mysql** - `:3306`
-- **phpmyadmin** - `:4500`
 
 ### Start after git clone
 
