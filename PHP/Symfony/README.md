@@ -26,11 +26,6 @@ Alternativelty, a new project can be made with Composer as well, like below:
 docker-compose run --rm php composer create-project symfony/skeleton:4.3.99 .
 ```
 
-Because containers are run as `root`, the files created by the commands are owned by `root`. To allow local editing of the Symfony application files, change the owner of the files to the current user:
-``` sh
-sudo chown -R $USER:$USER .
-```
-
 ### Connect to the database
 
 Modify the database credentials in the `src/.env` file to connect to the database container.
@@ -51,8 +46,7 @@ Additional commands can be run from the command line, like adding composer packa
 
 Containers created and their ports (if used) are as follows:
 
-- **nginx** - `:4600`
-- **php** - `:9000`
+- **php** - `:4200`
 - **mysql** - `:3306`
 - **postgres** - `:5432`
 
